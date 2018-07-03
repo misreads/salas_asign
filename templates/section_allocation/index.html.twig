@@ -1,0 +1,48 @@
+{% extends '@EasyAdmin/default/layout.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="panel">
+        <div class="content-header">
+            <h1 class="title">Asignacion de Seccion [{{ section.name }}] </h1>
+        </div>
+        <section class="panel-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <p>Hola, estas viendo informacion de id: {{ section.id }} , codigo: {{ section.code }}, horario: {{ section_schedule.abv }}</p>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr class="bg-blue-gradient">
+                                        <th>Id_classroom</th>
+                                        <th>Numero</th>
+                                        <th>Nombre</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for classroom in classrooms %}
+                                        <tr>
+                                            <td>{{ classroom.id }}</td>
+                                            <td>{{ classroom.number }}</td>
+                                            <td>{{ classroom.name }}</td>
+
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="4">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

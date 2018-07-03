@@ -1,0 +1,132 @@
+#easy_admin:
+#    entities:
+#        # List the entity class name you want to manage
+#        - App\Entity\Product
+#        - App\Entity\Category
+#        - App\Entity\User
+
+easy_admin:
+    site_name: '<b>Modulo de asignación</b>'
+
+    design:
+        menu:
+            - { label: 'Dashboard', route: 'dashboard', default: true }
+            - { label: 'ClassroomAlloc', entity: 'Classroom'}
+            - { label: 'SectionAlloc', entity: 'SectionCustom'}
+            - { label: 'Alloc', entity: 'Allocation'}
+            - { label: 'Dias', entity: 'Weekday' }
+            - { label: 'Bloque', entity: 'Block' }
+            - { label: 'Faculty', entity: 'Faculty' }
+            - { label: 'Department', entity: 'Department' }
+            - { label: 'Career', entity: 'Career' }
+            - { label: 'FacultyDepartment', entity: 'FacultyDepartment' }
+            - { entity: 'Allocation' }
+            - { label: 'Horario', entity: 'Schedule' }
+
+            - label: 'Administracion'
+              children: [{label: 'Usuario', entity: 'User'},{label: 'Asignaturas', entity: 'Subject'},{label: 'Salas', entity: 'Classroom'},{label: 'Profesores', entity: 'Professor'},{label: 'Secciones', entity: 'Section'}]
+    #assets:
+     #   css:
+      #      - 'build/bulma.css'
+
+    entities:
+            Classroom:
+                class: App\Entity\Classroom
+                label: 'Salas'
+                list:
+                    fields:
+                        - number
+                        - name
+                        - class_size
+            Subject:
+                class: App\Entity\Subject
+                label: 'Asignatura'
+                list:
+                    fields:
+                        - { property : 'name', label: 'Nombre'}
+                        - code
+                        - career
+                        - { property : 'sections', label: 'Seccion'}
+
+            Block:
+                class: App\Entity\Block
+                label: 'Bloque'
+
+            Career:
+                class: App\Entity\Career
+                label: 'Carera'
+
+            Faculty:
+                class: App\Entity\Faculty
+                label: 'Facultad'
+
+            Department:
+                class: App\Entity\Department
+                label: 'Departamento'
+
+            Professor:
+                class: App\Entity\Professor
+                label: 'Profesores'
+                list:
+                    title: 'Lista de %%entity_label%%'
+                    fields:
+                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'lastname', label: 'Apellido'}
+                        - { property : 'sections', label: 'Seccion'}
+                    actions: ['show']
+
+            Schedule:
+                class: App\Entity\Schedule
+                label: 'Horario'
+
+            Section:
+                class: App\Entity\Section
+                label: 'Sección'
+
+            SectionCustom:
+                class: App\Entity\Section
+                label: 'Sección'
+                list:
+                    title: 'Lista de %%entity_label%%'
+                    fields:
+                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'code', label: 'Codigo Seccion'}
+                        - { property : 'professor.fullname', label: 'Academico'}
+                        - { property : 'classSize', label: 'Cant. Alumnos'}
+                        - { property : 'subject.name', label: 'Asign.'}
+                        - { property: 'FD', label: 'FacDepto'}
+                        - { property : 'schedule.blockweekday', label: 'Horario'}
+                    actions:
+                        -
+                            name: 'section_allocation'
+                            type: 'route'
+                            label: 'Asign'
+                        - 'show'
+
+                    sort: ['name', 'DESC']
+                    dql_filter: 'entity.isTaken != true'
+
+            Weekday:
+                class: App\Entity\Weekday
+                label: 'Dias de la semana'
+
+            FacultyDepartment:
+                class: App\Entity\FacultyDepartment
+                label: 'Facultad y Departamento'
+
+            User:
+                class: App\Entity\User
+                label: 'Usuarios'
+
+            Allocation:
+                class: App\Entity\Allocation
+                label: 'Asignacion'
+                list:
+                    title: 'Asignaciones'
+                    fields:
+                        - {property: 'id', label: 'alloc_id'}
+                        - {property: 'section.code', label: 'Seccion Codigo'}
+                        - {property: 'section.name', label: 'Seccion Asignatura'}
+                        - {property: 'classroom.number', label: 'Numero sala'}
+                        - {property: 'classroom.name', label: 'Sala'}
+                        - {property: 'section.schedule.abv', label: 'Sala'}
