@@ -85,7 +85,7 @@ easy_admin:
 
             SectionCustom:
                 class: App\Entity\Section
-                label: 'Sección'
+                label: 'Secciones'
                 list:
                     title: 'Lista de %%entity_label%%'
                     fields:
@@ -101,6 +101,7 @@ easy_admin:
                             name: 'section_allocation'
                             type: 'route'
                             label: 'Asign'
+                            icon: 'search'
                         - 'show'
 
                     sort: ['name', 'DESC']

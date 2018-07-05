@@ -1,39 +1,65 @@
 {% extends '@EasyAdmin/default/layout.html.twig' %}
 
-{% block title %}Dashboard{% endblock %}
-
-{% block content %}
-    <div class="panel">
+{% block main %}
+    <div class="panel" id="panel-alloc" data-url-new-allocation="{{ path('new_allocation') }}">
         <div class="content-header">
             <h1 class="title">Asignacion de Seccion [{{ section.name }}] </h1>
         </div>
         <section class="panel-body">
             <div class="container-fluid">
                 <div class="row">
+
                     <div class="col-sm-5">
-                        <p>Hola, estas viendo informacion de id: {{ section.id }} , codigo: {{ section.code }}, horario: {{ section_schedule.abv }}</p>
-                    </div>
-                    <div class="col-sm-7">
+                        <ol style="visibility:hidden;"><li>&nbsp;</li><li>&nbsp;</li></ol>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table text-center">
                                 <thead>
-                                    <tr class="bg-blue-gradient">
-                                        <th>Id_classroom</th>
+                                    <tr class="bg-green-gradient text-center">
+                                        <th>Seccion</th>
+                                        <th>Cantidad de alumnos</th>
+                                        <th>Horario</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr class="text-center">
+                                            <td>{{ section.name }}</td>
+                                            <td>{{ section.classSize }}</td>
+                                            <td>{{ section.schedule }}</td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-7">
+
+                        <div class="input-group">
+                            <input class="input-sm" type="text" id="inputClassName" onkeyup="filterName()" placeholder="Buscar por sala">
+                            <input class="input-sm" type="text" id="inputClassNumber" onkeyup="filterNumber()" placeholder="Buscar por numero">
+                            <input class="input-sm" type="text" id="inputClassSize" onkeyup="filterClassSize()" placeholder="Buscar por capacidad">
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table text-center" id="classroomTable">
+                                <thead>
+                                    <tr class="bg-blue-gradient text-center">
+                                        <th>Asignar?</th>
+                                        <th>Sala</th>
                                         <th>Numero</th>
-                                        <th>Nombre</th>
+                                        <th>Capacidad alumnos</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for classroom in classrooms %}
-                                        <tr>
-                                            <td>{{ classroom.id }}</td>
-                                            <td>{{ classroom.number }}</td>
+                                        <tr class="text-center">
+                                            <td><button data-section="{{ section.id }}" data-classroom="{{ classroom.id }}" data-loading-text="Confirmando..." class="btn btn-block btn-asignar">Confirmar</button></td>
                                             <td>{{ classroom.name }}</td>
-
+                                            <td>{{ classroom.number }}</td>
+                                            <td>{{ classroom.classSize }}</td>
                                         </tr>
                                     {% else %}
                                         <tr>
-                                            <td colspan="4">no records found</td>
+                                            <td colspan="4">No hay salas para asignar</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -46,3 +72,142 @@
     </div>
 
 {% endblock %}
+
+{% block body_javascript %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.24.4/dist/sweetalert2.all.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+          $('.btn-asignar').click(function () {
+            var url = $('#panel-alloc').data("url-new-allocation")
+            $(this).button('loading')
+            var section=$(this).data("section")
+            var classroom=$(this).data("classroom")
+
+            swal({
+              title: 'Confirmar',
+              text: "¿Deseas asignar esta seccion a esta sala?",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Si, asignar',
+              cancelButtonText: 'No, volver',
+            }).then((result) => {
+              if (result.value) {
+                let timerInterval
+                swal({
+                  title: 'Asignacion exitosa!',
+                  html: 'Tu asignacion a sido creada. Volviendo en <strong></strong> segundos',
+                  type: 'success',
+                  timer: 1700,
+                  onOpen: () => {
+                    swal.showLoading()
+                    timerInterval = setInterval(() => {
+                      swal.getContent().querySelector('strong')
+                        .textContent = swal.getTimerLeft()
+                    }, 100)
+                  },
+                  onClose: () => {
+                    clearInterval(timerInterval)
+                  }
+                }).then((result) => {
+                  if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.timer
+                  ) {
+                    return $.post(url,{section:section, classroom:classroom})
+                      .done(function( data ) {
+                        window.location.replace(data.url);
+                      });
+                  }
+                })
+
+              } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+              ) {
+                swal(
+                  'Asignacion cancelada',
+                  'Seleccione otra sala a asignar',
+                  'error'
+                )
+                $(this).button('reset')
+              }
+            })
+
+            // return $.post(url,{section:section, classroom:classroom})
+            //   .done(function( data ) {
+            //     window.location.replace(data.url);
+            //   });
+          })
+        })
+
+        function filterNumber() {
+          // Declare variables
+          var input, filter, table, tr, td, i;
+          input = document.getElementById("inputClassNumber");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("classroomTable");
+          tr = table.getElementsByTagName("tr");
+
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+              if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+        }
+
+        function filterName() {
+          // Declare variables
+          var input, filter, table, tr, td, i;
+          input = document.getElementById("inputClassName");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("classroomTable");
+          tr = table.getElementsByTagName("tr");
+
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+              if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+        }
+
+        function filterClassSize() {
+          // Declare variables
+          var input, filter, table, tr, td, i;
+          input = document.getElementById("inputClassSize");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("classroomTable");
+          tr = table.getElementsByTagName("tr");
+
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[3];
+            if (td) {
+              if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+        }
+
+
+    </script>
+{% endblock body_javascript %}
+
+
