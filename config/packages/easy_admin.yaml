@@ -11,23 +11,11 @@ easy_admin:
     design:
         menu:
             - { label: 'Dashboard', route: 'dashboard', default: true }
-            - { label: 'ClassroomAlloc', entity: 'Classroom'}
-            - { label: 'SectionAlloc', entity: 'SectionCustom'}
-            - { label: 'Alloc', entity: 'Allocation'}
-            - { label: 'Dias', entity: 'Weekday' }
-            - { label: 'Bloque', entity: 'Block' }
-            - { label: 'Faculty', entity: 'Faculty' }
-            - { label: 'Department', entity: 'Department' }
-            - { label: 'Career', entity: 'Career' }
-            - { label: 'FacultyDepartment', entity: 'FacultyDepartment' }
-            - { entity: 'Allocation' }
-            - { label: 'Horario', entity: 'Schedule' }
-
+            - label: 'Asignaciones'
+              children: [{ label: 'Asignar a salas', entity: 'SectionCustom'},{ label: 'Asignar a asignaturas', entity: 'Classroom'},{label: 'Asignaciones Realizadas', entity: 'Allocation'}]
             - label: 'Administracion'
-              children: [{label: 'Usuario', entity: 'User'},{label: 'Asignaturas', entity: 'Subject'},{label: 'Salas', entity: 'Classroom'},{label: 'Profesores', entity: 'Professor'},{label: 'Secciones', entity: 'Section'}]
-    #assets:
-     #   css:
-      #      - 'build/bulma.css'
+              children: [{label: 'Usuario', entity: 'User'},{label: 'Secciones', entity: 'Section'},{ label: 'Facultades y Deptos.', entity: 'FacultyDepartment'},{label: 'Carreras', entity: 'Career'},{label: 'Asignaturas', entity: 'Subject'},{label: 'Profesores', entity: 'Professor'},{label: 'Salas', entity: 'Classroom'}]
+
 
     entities:
             Classroom:
@@ -82,6 +70,8 @@ easy_admin:
             Section:
                 class: App\Entity\Section
                 label: 'Sección'
+                templates:
+                    list: 'easy_admin/Section/SectionListCustom.html.twig'
 
             SectionCustom:
                 class: App\Entity\Section
@@ -125,9 +115,8 @@ easy_admin:
                 list:
                     title: 'Asignaciones'
                     fields:
-                        - {property: 'id', label: 'alloc_id'}
                         - {property: 'section.code', label: 'Seccion Codigo'}
                         - {property: 'section.name', label: 'Seccion Asignatura'}
                         - {property: 'classroom.number', label: 'Numero sala'}
                         - {property: 'classroom.name', label: 'Sala'}
-                        - {property: 'section.schedule.abv', label: 'Sala'}
+                        - {property: 'section.schedule.abv', label: 'Horario'}

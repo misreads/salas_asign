@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Classroom;
-use App\Entity\Section;
 use App\Entity\Allocation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
