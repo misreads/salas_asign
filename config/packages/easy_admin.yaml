@@ -43,6 +43,21 @@ easy_admin:
             Career:
                 class: App\Entity\Career
                 label: 'Carera'
+                list:
+                    title: 'Listado de Carreras'
+                    fields:
+                        - { property : 'name', label: 'Carrera'}
+                        - { property : 'code', label: 'Codigo'}
+                        - { property : 'facultyDepartment', label: 'Fac. Depto.'}
+                        - { property : 'subjects', label: 'Asignaturas'}
+                edit:
+                     fields:
+                              - { property : 'name', label: 'Carrera'}
+                              - { property : 'code', label: 'Codigo'}
+                              - { property : 'facultyDepartment', label: 'Fac. Depto'}
+                templates:
+                      list: 'easy_admin/CareerListCustom.html.twig'
+
 
             Faculty:
                 class: App\Entity\Faculty
@@ -62,6 +77,8 @@ easy_admin:
                         - { property : 'lastname', label: 'Apellido'}
                         - { property : 'sections', label: 'Seccion'}
                     actions: ['show']
+                templates:
+                      list: 'easy_admin/ProfessorListCustom.html.twig'
 
             Schedule:
                 class: App\Entity\Schedule
@@ -70,8 +87,28 @@ easy_admin:
             Section:
                 class: App\Entity\Section
                 label: 'Sección'
+                list:
+                    title: 'Lista de %%entity_label%%'
+                    fields:
+                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'code', label: 'Codigo Seccion'}
+                        - { property : 'professor.fullname', label: 'Academico'}
+                        - { property : 'classSize', label: 'Cant. Alumnos'}
+                        - { property : 'subject.name', label: 'Asign.'}
+                        - { property: 'FD', label: 'FacDepto'}
+                        - { property : 'schedule.blockweekday', label: 'Horario'}
+                edit:
+                    title: 'Editando %%entity_label%% : %%entity_id%%'
+                    fields:
+                        - { property: 'name', label: 'Nombre'}
+                        - { property: 'code', label: 'Codigo seccion'}
+                        - { property: 'classSize', type: 'integer' , label: 'Cantidad de alumnos'}
+                        - { property: 'subject', label: 'Asignatura'}
+                        - { property: 'schedule', label: 'Horario'}
+                        - { property: 'professor', label: 'Profesor'}
                 templates:
-                    list: 'easy_admin/Section/SectionListCustom.html.twig'
+                    list: 'easy_admin/SectionListCustom.html.twig'
+
 
             SectionCustom:
                 class: App\Entity\Section
@@ -104,6 +141,11 @@ easy_admin:
             FacultyDepartment:
                 class: App\Entity\FacultyDepartment
                 label: 'Facultad y Departamento'
+                list:
+                    fields:
+                        - { property : 'faculty', label: 'Facultad'}
+                        - { property : 'department', label: 'Departamento'}
+                  #actions: ['-delete']
 
             User:
                 class: App\Entity\User

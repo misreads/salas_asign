@@ -113,7 +113,6 @@
                   }
                 }).then((result) => {
                   if (
-                    // Read more about handling dismissals
                     result.dismiss === swal.DismissReason.timer
                   ) {
                     return $.post(url,{section:section, classroom:classroom})
@@ -124,7 +123,6 @@
                 })
 
               } else if (
-                // Read more about handling dismissals
                 result.dismiss === swal.DismissReason.cancel
               ) {
                 swal(
@@ -135,23 +133,15 @@
                 $(this).button('reset')
               }
             })
-
-            // return $.post(url,{section:section, classroom:classroom})
-            //   .done(function( data ) {
-            //     window.location.replace(data.url);
-            //   });
           })
         })
 
         function filterNumber() {
-          // Declare variables
           var input, filter, table, tr, td, i;
           input = document.getElementById("inputClassNumber");
           filter = input.value.toUpperCase();
           table = document.getElementById("classroomTable");
           tr = table.getElementsByTagName("tr");
-
-          // Loop through all table rows, and hide those who don't match the search query
           for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[2];
             if (td) {
@@ -165,14 +155,11 @@
         }
 
         function filterName() {
-          // Declare variables
           var input, filter, table, tr, td, i;
           input = document.getElementById("inputClassName");
           filter = input.value.toUpperCase();
           table = document.getElementById("classroomTable");
           tr = table.getElementsByTagName("tr");
-
-          // Loop through all table rows, and hide those who don't match the search query
           for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[1];
             if (td) {
@@ -186,14 +173,11 @@
         }
 
         function filterClassSize() {
-          // Declare variables
           var input, filter, table, tr, td, i;
           input = document.getElementById("inputClassSize");
           filter = input.value.toUpperCase();
           table = document.getElementById("classroomTable");
           tr = table.getElementsByTagName("tr");
-
-          // Loop through all table rows, and hide those who don't match the search query
           for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[3];
             if (td) {
@@ -205,7 +189,6 @@
             }
           }
         }
-
 
     </script>
 {% endblock body_javascript %}
