@@ -12,7 +12,7 @@ easy_admin:
         menu:
             - { label: 'Dashboard', route: 'dashboard', default: true }
             - label: 'Asignaciones'
-              children: [{ label: 'Asignar a salas', entity: 'SectionCustom'},{ label: 'Asignar a asignaturas', entity: 'Classroom'},{label: 'Asignaciones Realizadas', entity: 'Allocation'}]
+              children: [{ label: 'Asignar a salas', entity: 'SectionCustom'},{ label: 'Asignar a asignaturas', entity: 'ClassroomCustom'},{label: 'Asignaciones Realizadas', entity: 'Allocation'}]
             - label: 'Administracion'
               children: [{label: 'Usuario', entity: 'User'},{label: 'Secciones', entity: 'Section'},{ label: 'Facultades y Deptos.', entity: 'FacultyDepartment'},{label: 'Carreras', entity: 'Career'},{label: 'Asignaturas', entity: 'Subject'},{label: 'Profesores', entity: 'Professor'},{label: 'Salas', entity: 'Classroom'}]
 
@@ -20,21 +20,46 @@ easy_admin:
     entities:
             Classroom:
                 class: App\Entity\Classroom
-                label: 'Salas'
+                label: 'Sala'
                 list:
+                    title: 'Listado de Salas'
                     fields:
-                        - number
-                        - name
-                        - class_size
+                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'number', label: 'Numero de sala'}
+                        - { property : 'class_size', label: 'Capacidad alumnos'}
+                edit:
+                    title: 'Editando %%entity_label%%'
+                    fields:
+                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'number', label: 'Numero de sala'}
+                        - { property : 'class_size', label: 'Capacidad alumnos'}
+                    actions: ['-delete']
+                show:
+                    actions: ['-delete']
+                templates:
+                    list: 'easy_admin/ClassroomListCustom.html.twig'
+
             Subject:
                 class: App\Entity\Subject
                 label: 'Asignatura'
+                search:
+                    fields: ['name', 'code', 'career.name', 'sections']
                 list:
+                    title: 'Listado de Asignaturas'
                     fields:
                         - { property : 'name', label: 'Nombre'}
-                        - code
-                        - career
+                        - { property : 'code', label: 'Codigo'}
+                        - { property : 'career.name', label: 'Carrera'}
                         - { property : 'sections', label: 'Seccion'}
+                edit:
+                    title: 'Editando %%entity_label%%'
+                    fields:
+                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'code', label: 'Codigo'}
+                        - { property : 'career', label: 'Carrera'}
+                    actions: ['-delete']
+                templates:
+                     list: 'easy_admin/SubjectListCustom.html.twig'
 
             Block:
                 class: App\Entity\Block
@@ -42,19 +67,25 @@ easy_admin:
 
             Career:
                 class: App\Entity\Career
-                label: 'Carera'
+                label: 'Carreras'
+                search:
+                    fields: ['name', 'code', 'faculty_department']
                 list:
                     title: 'Listado de Carreras'
                     fields:
                         - { property : 'name', label: 'Carrera'}
                         - { property : 'code', label: 'Codigo'}
-                        - { property : 'facultyDepartment', label: 'Fac. Depto.'}
+                        - { property : 'faculty_department', label: 'Facultad y Departamento', type: 'text'}
                         - { property : 'subjects', label: 'Asignaturas'}
                 edit:
+                     title: 'Editando %%entity_label%%'
                      fields:
                               - { property : 'name', label: 'Carrera'}
                               - { property : 'code', label: 'Codigo'}
-                              - { property : 'facultyDepartment', label: 'Fac. Depto'}
+                              - { property : 'faculty_department', label: 'Facultad y Departamento'}
+                     actions: ['-delete']
+                show:
+                     actions: ['-delete']
                 templates:
                       list: 'easy_admin/CareerListCustom.html.twig'
 
@@ -69,14 +100,21 @@ easy_admin:
 
             Professor:
                 class: App\Entity\Professor
-                label: 'Profesores'
+                label: 'Profesor'
                 list:
-                    title: 'Lista de %%entity_label%%'
+                    title: 'Listado de Profesores'
                     fields:
                         - { property : 'name', label: 'Nombre'}
-                        - { property : 'lastname', label: 'Apellido'}
+                        - { property : 'lastname', label: 'Apellidos'}
                         - { property : 'sections', label: 'Seccion'}
-                    actions: ['show']
+
+                edit:
+                    title: 'Editando %%entity_label%%'
+                    fields:
+                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'lastname', label: 'Apellidos'}
+                        - { property : 'sections', label: 'Seccion'}
+                    actions: ['-delete']
                 templates:
                       list: 'easy_admin/ProfessorListCustom.html.twig'
 
@@ -87,52 +125,33 @@ easy_admin:
             Section:
                 class: App\Entity\Section
                 label: 'Sección'
+                search:
+                      fields: ['name', 'code']
                 list:
                     title: 'Lista de %%entity_label%%'
                     fields:
                         - { property : 'name', label: 'Nombre'}
                         - { property : 'code', label: 'Codigo Seccion'}
-                        - { property : 'professor.fullname', label: 'Academico'}
+                        - { property : 'professor.fullname', label: 'Profesor'}
                         - { property : 'classSize', label: 'Cant. Alumnos'}
-                        - { property : 'subject.name', label: 'Asign.'}
-                        - { property: 'FD', label: 'FacDepto'}
-                        - { property : 'schedule.blockweekday', label: 'Horario'}
+                        - { property : 'subject.name', label: 'Asignatura'}
+                        - { property : 'FD', label: 'Fac. Depto.'}
+                        - { property : 'schedule.abv', label: 'Bloque'}
+                        - { property : 'schedule.block.block_time', label: 'Horario'}
+                        - { property: 'is_taken', label: 'Asignada?', type: 'boolean'}
+
                 edit:
-                    title: 'Editando %%entity_label%% : %%entity_id%%'
+                    title: 'Editando %%entity_label%%'
                     fields:
-                        - { property: 'name', label: 'Nombre'}
-                        - { property: 'code', label: 'Codigo seccion'}
-                        - { property: 'classSize', type: 'integer' , label: 'Cantidad de alumnos'}
-                        - { property: 'subject', label: 'Asignatura'}
-                        - { property: 'schedule', label: 'Horario'}
-                        - { property: 'professor', label: 'Profesor'}
+                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'code', label: 'Codigo seccion'}
+                        - { property : 'classSize', type: 'integer' , label: 'Cantidad de alumnos'}
+                        - { property : 'subject', label: 'Asignatura'}
+                        - { property : 'schedule', label: 'Horario'}
+                        - { property : 'professor', label: 'Profesor'}
+                    actions: ['-delete']
                 templates:
                     list: 'easy_admin/SectionListCustom.html.twig'
-
-
-            SectionCustom:
-                class: App\Entity\Section
-                label: 'Secciones'
-                list:
-                    title: 'Lista de %%entity_label%%'
-                    fields:
-                        - { property : 'name', label: 'Nombre'}
-                        - { property : 'code', label: 'Codigo Seccion'}
-                        - { property : 'professor.fullname', label: 'Academico'}
-                        - { property : 'classSize', label: 'Cant. Alumnos'}
-                        - { property : 'subject.name', label: 'Asign.'}
-                        - { property: 'FD', label: 'FacDepto'}
-                        - { property : 'schedule.blockweekday', label: 'Horario'}
-                    actions:
-                        -
-                            name: 'section_allocation'
-                            type: 'route'
-                            label: 'Asign'
-                            icon: 'search'
-                        - 'show'
-
-                    sort: ['name', 'DESC']
-                    dql_filter: 'entity.isTaken != true'
 
             Weekday:
                 class: App\Entity\Weekday
@@ -141,15 +160,105 @@ easy_admin:
             FacultyDepartment:
                 class: App\Entity\FacultyDepartment
                 label: 'Facultad y Departamento'
+                search:
+                    fields: ['faculty.name', 'department.name']
                 list:
+                    title: 'Facultades y Departamentos'
                     fields:
-                        - { property : 'faculty', label: 'Facultad'}
-                        - { property : 'department', label: 'Departamento'}
-                  #actions: ['-delete']
+                        - { property : 'faculty.name', label: 'Facultad'}
+                        - { property : 'department.name', label: 'Departamento'}
+                edit:
+                    actions: ['-delete']
+
+                templates:
+                     list: 'easy_admin/FDListCustom.html.twig'
+
+            SectionCustom:
+                class: App\Entity\Section
+                label: 'Secciones'
+                search:
+                      fields: ['name', 'code']
+                list:
+                    title: 'Lista de %%entity_label%% Disponibles'
+                    fields:
+                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'code', label: 'Codigo Seccion'}
+                        - { property : 'professor.fullname', label: 'Profesor'}
+                        - { property : 'classSize', label: 'Cant. Alumnos'}
+                        - { property : 'subject.name', label: 'Asignatura'}
+                        - { property : 'FD', label: 'Fac. Depto.'}
+                        - { property : 'schedule.abv', label: 'Bloque'}
+                        - { property : 'schedule.block.block_time', label: 'Horario'}
+                    actions:
+                        -
+                            name: 'section_allocation'
+                            type: 'route'
+                            label: 'Asignar'
+                            icon: 'pencil'
+                            css_class: 'text-green'
+                        - '-show'
+                        - '-delete'
+                    sort: ['name', 'DESC']
+                    dql_filter: 'entity.isTaken != true'
+                edit:
+                    title: 'Editando %%entity_label%%'
+                    fields:
+                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'code', label: 'Codigo seccion'}
+                        - { property : 'classSize', type: 'integer' , label: 'Cantidad de alumnos'}
+                        - { property : 'subject', label: 'Asignatura'}
+                        - { property : 'schedule', label: 'Horario'}
+                        - { property : 'professor', label: 'Profesor'}
+                    actions:
+                          ['-delete']
+                templates:
+                    list: 'easy_admin/SectionListCustom.html.twig'
+
+            ClassroomCustom:
+                            class: App\Entity\Classroom
+                            label: 'Salas'
+                            search:
+                                  fields: ['name', 'code', 'professor.fullname']
+                            list:
+                                title: 'Lista de %%entity_label%% Disponibles'
+                                fields:
+                                    - { property : 'name', label: 'Nombre'}
+                                    - { property : 'number', label: 'Numero de sala'}
+                                    - { property : 'class_size', label: 'Capacidad alumnos'}
+                                    - { property : 'allocations', label: 'Asignaciones'}
+                                actions:
+                                    -
+                                        name: 'classroom_allocation'
+                                        type: 'route'
+                                        label: 'Asignar'
+                                        icon: 'pencil'
+                                        css_class: 'text-green'
+                                    - '-show'
+                                    - '-delete'
+                                sort: ['name', 'DESC']
+#                                dql_filter: 'entity.isTaken != true'
+                            edit:
+                                title: 'Editando %%entity_label%%'
+                                fields:
+                                    - { property : 'name', label: 'Nombre'}
+                                    - { property : 'number', label: 'Numero de sala'}
+                                    - { property : 'class_size', label: 'Capacidad alumnos'}
+                                actions:
+                                      ['-delete']
+                            templates:
+                                list: 'easy_admin/ClassroomListCustom.html.twig'
 
             User:
                 class: App\Entity\User
                 label: 'Usuarios'
+                form:
+                     fields:
+                         - {property : 'username', label: 'Nombre_usuario'}
+                         - {property : 'email', label: 'Correo'}
+                         - {property : 'enabled', label: 'Activo'}
+                         # if administrators are allowed to edit users' passwords and roles, add this:
+                         - { property : 'plainPassword', type: 'text', type_options: { required: false } }
+                         - { property : 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
 
             Allocation:
                 class: App\Entity\Allocation
@@ -157,8 +266,15 @@ easy_admin:
                 list:
                     title: 'Asignaciones'
                     fields:
-                        - {property: 'section.code', label: 'Seccion Codigo'}
-                        - {property: 'section.name', label: 'Seccion Asignatura'}
-                        - {property: 'classroom.number', label: 'Numero sala'}
-                        - {property: 'classroom.name', label: 'Sala'}
-                        - {property: 'section.schedule.abv', label: 'Horario'}
+                        - {property : 'section.code', label: 'Seccion Codigo'}
+                        - {property : 'section.name', label: 'Seccion Asignatura'}
+                        - {property : 'classroom.number', label: 'Numero sala'}
+                        - {property : 'classroom', label: 'Sala'}
+                        - {property : 'section.professor', label: 'Profesor'}
+                        - {property : 'section.schedule.abv', label: 'Bloque'}
+                        - {property : 'section.schedule.block.block_time', label: 'Horario'}
+                    actions: ['-edit']
+
+            AllocationCustom:
+                            class: App\Entity\Allocation
+                            label: 'Asignacion'

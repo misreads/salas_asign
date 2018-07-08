@@ -16,15 +16,15 @@
                                 <thead>
                                     <tr class="bg-green-gradient text-center">
                                         <th>Seccion</th>
-                                        <th>Cantidad de alumnos</th>
                                         <th>Horario</th>
+                                        <th>Cantidad de alumnos</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                         <tr class="text-center">
                                             <td>{{ section.name }}</td>
-                                            <td>{{ section.classSize }}</td>
                                             <td>{{ section.schedule }}</td>
+                                            <td>{{ section.classSize }}</td>
                                         </tr>
                                 </tbody>
                             </table>
@@ -34,9 +34,9 @@
                     <div class="col-sm-7">
 
                         <div class="input-group">
-                            <input class="input-sm" type="text" id="inputClassName" onkeyup="filterName()" placeholder="Buscar por sala">
-                            <input class="input-sm" type="text" id="inputClassNumber" onkeyup="filterNumber()" placeholder="Buscar por numero">
-                            <input class="input-sm" type="text" id="inputClassSize" onkeyup="filterClassSize()" placeholder="Buscar por capacidad">
+                            <input class="box-input" type="text" id="inputClassName" onkeyup="filterName()" placeholder="Buscar por sala">
+                            <input class="box-input" type="text" id="inputClassNumber" onkeyup="filterNumber()" placeholder="Buscar por numero">
+                            <input class="box-input" type="text" id="inputClassSize" onkeyup="filterClassSize()" placeholder="Buscar por capacidad">
                         </div>
 
                         <div class="table-responsive">
