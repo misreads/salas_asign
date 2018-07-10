@@ -29,6 +29,8 @@ class ClassroomAllocationController extends Controller
         $classroomClassSize = $classroom->getClassSize();
         $scheduleNotAvailable = [];
         $sectionAvailable = [];
+        $sectionAvailableSorted = [];
+        $sectionAvailableSortedFinal = [];
 
         foreach ($classroomAllocation as $ca)
         {
@@ -38,7 +40,7 @@ class ClassroomAllocationController extends Controller
         foreach ($sections as $section) {
             $isAvailable = true;
             foreach ($scheduleNotAvailable as $sna) {
-                if ($section->getSchedule()->getAbv() === $sna or $section->getIsTaken() === true) {
+                if ($section->getSchedule()->getAbv() === $sna) {
                     $isAvailable = false;
                 }
             }
@@ -47,11 +49,32 @@ class ClassroomAllocationController extends Controller
             }
         }
 
+        foreach ($sectionAvailable as $sa) {
+            if ($sa->getClassSize() <= $classroomClassSize )
+            {
+                $sectionAvailableSorted[] = $sa;
+            }
+        }
+
+        foreach ($sectionAvailableSorted as $sas) {
+            if ($sas->getIsTaken() === false )
+            {
+                $sectionAvailableSortedFinal[] = $sas;
+            }
+        }
+
+        usort($sectionAvailableSortedFinal,function ($a, $b){
+            if ($a->getClasssize() == $b->getClasssize()) {
+                return 0;
+            }
+            return ($a->getClasssize() > $b->getClasssize()) ? -1 : 1;
+        });
+
         return $this->render(
             'classroom_allocation/index.html.twig',
             [
                 'controller_name' => 'ClassroomAllocationController',
-                'sections' => $sectionAvailable,
+                'sections' => $sectionAvailableSortedFinal,
                 'classroom' => $classroom,
             ]
         );

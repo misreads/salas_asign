@@ -2,23 +2,67 @@
 
 {% block title %}Dashboard{% endblock %}
 
-{% block content %}
-    <div class="panel">
-        <section class="panel-body">
-            <div class="content-header">
-                <div class="row">
-                    <div class="col-sm-9">
-                        <h1 class="title">Dashboard</h1>
+{% block main %}
+
+    <style>
+        .counter {
+            display: table-cell;
+            margin:1.5%;
+            font-size:100px;
+            background-color: #FF6F6F;
+            width:200px;
+            border-radius: 50%;
+            height:200px;
+            vertical-align: middle;
+        }
+    </style>
+
+    <div class="row">
+        <h1 class="col-sm-9 page-header">Dashboard</h1>
+
+        <div class="col-sm-9 col-sm-offset-1 col-md-10 main">
+
+                <div class="row placeholders center-block">
+                    <div class="col-xs-6 col-sm-3 placeholder">
+                        <h1 class="counter bl bg-aqua-active text-center" data-count="{{ sections }}">0</h1>
+                        <h4>Secciones</h4>
+                        <span class="text-muted text-center">Cantidad de secciones en el sistema</span>
                     </div>
-                    <div class="col-sm-9">
-                       <section class="container-fluid">
-                           <p>hashodasl</p>
-                       </section>
+                    <div class="col-xs-6 col-sm-3 placeholder">
+                        <h1 class="counter bl bg-blue-active text-center" data-count="{{ allocations }}">0</h1>
+                        <h4>Asignaciones</h4>
+                        <span class="text-muted text-center">Cantidad de secciones asignadas en el sistema</span>
+                    </div><div class="col-xs-6 col-sm-3 placeholder">
+                        <h1 class="counter bl bg-red-active text-center" data-count="{{ noalloc }}">0</h1>
+                        <h4>Por Asignar</h4>
+                        <span class="text-muted text-center">Cantidad de secciones sin asignar en el sistema</span>
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>
 
 
+{% endblock %}
+
+{% block body_javascript %}
+
+    <script>
+      $('.counter').each(function() {
+        var $this = $(this),
+          countTo = $this.attr('data-count');
+
+        $({ countNum: $this.text()}).animate({
+            countNum: countTo
+          },
+          {
+            duration: 3000,
+            easing:'linear',
+            step: function() {
+              $this.text(Math.floor(this.countNum));
+            },
+            complete: function() {
+              $this.text(this.countNum);
+              //alert('finished');
+            }
+          });
+      });
+    </script>
 {% endblock %}

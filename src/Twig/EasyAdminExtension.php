@@ -6,6 +6,8 @@ namespace App\Twig;
 use App\Entity\Allocation;
 use App\Entity\Career;
 use App\Entity\Classroom;
+use App\Entity\Department;
+use App\Entity\Faculty;
 use App\Entity\FacultyDepartment;
 use App\Entity\Professor;
 use App\Entity\Section;
@@ -38,6 +40,12 @@ class EasyAdminExtension extends \Twig_Extension
             ),new \Twig_SimpleFilter(
                 'filter_admin_actions_fd',
                 [$this, 'filterActionsFD']
+            ),new \Twig_SimpleFilter(
+                'filter_admin_actions_faculty',
+                [$this, 'filterActionsFaculty']
+            ),new \Twig_SimpleFilter(
+                'filter_admin_actions_department',
+                [$this, 'filterActionsDepartment']
             )
         ];
     }
@@ -84,6 +92,22 @@ class EasyAdminExtension extends \Twig_Extension
     public function filterActionsFD(array $itemActions, $item)
     {
         if ($item instanceof FacultyDepartment && count($item->getCareers()) > 0) {
+            unset($itemActions['delete']);
+        }
+        return $itemActions;
+    }
+
+    public function filterActionsFaculty(array $itemActions, $item)
+    {
+        if ($item instanceof Faculty && count($item->getFacultyDepartments()) > 0) {
+            unset($itemActions['delete']);
+        }
+        return $itemActions;
+    }
+
+    public function filterActionsDepartment(array $itemActions, $item)
+    {
+        if ($item instanceof Department && count($item->getFacultyDepartments()) > 0) {
             unset($itemActions['delete']);
         }
         return $itemActions;

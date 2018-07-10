@@ -1,0 +1,55 @@
+{% extends '@EasyAdmin/default/layout.html.twig' %}
+
+{% block title %}Horario de la sala{% endblock %}
+
+{% block main %}
+
+    <div class="col-sm-12">
+        <div class="table-responsive">
+            <table class="table text-center">
+                <thead>
+                    <tr class="bg-black-active text-center">
+                        <th>Nombre Sala</th>
+                        <th>Codigo Sala</th>
+                        <th>Capacidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center">
+                        <td>{{ classroom.name }}</td>
+                        <td>{{ classroom.number }}</td>
+                        <td>{{ classroom.classSize }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="table-responsive">
+            <table class="table text-center">
+                <thead>
+                    <tr class="bg-black-active text-center">
+                            <td>Bloques</td>
+                        {% for weekday in weekdays %}
+                            <td>{{ weekday.day }}</td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for schedule in data_schedule %}
+                    <tr class="text-center">
+                            <td>{{ schedule.block }}</td>
+                            <td>{{ schedule.lunes }}</td>
+                            <td>{{ schedule.martes }}</td>
+                            <td>{{ schedule.miercoles }}</td>
+                            <td>{{ schedule.jueves }}</td>
+                            <td>{{ schedule.viernes }}</td>
+                            <td>{{ schedule.sabado }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

@@ -31,4 +31,11 @@ class AdminController extends BaseAdminController
         $this->em->flush();
     }
 
+    protected function persistSectionEntity($entity)
+    {
+        $entity->setIsTaken(false);
+        $this->em->persist($entity);
+        $this->em->flush();
+    }
+
 }
