@@ -37,6 +37,10 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/salas_asign/?entity=ClassroomDisplay/, role: ROLE_USER }
+#        - { path: ^/salas_asign/dashboard?menuIndex=0&submenuIndex=-1, role: ROLE_USER }
+        - { path: ^/, role: ROLE_USER }
+

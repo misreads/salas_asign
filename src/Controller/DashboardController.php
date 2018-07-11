@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DashboardController extends Controller
 {
     /**
-     * @Route("/dashboard", name="dashboard")
+     * @Route("/salas_asign/dashboard", name="dashboard")
      */
     public function index()
     {

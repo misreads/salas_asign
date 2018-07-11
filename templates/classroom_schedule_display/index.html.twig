@@ -25,8 +25,8 @@
         </div>
     </div>
     <div class="col-sm-12">
-        <div class="table-responsive">
-            <table class="table text-center">
+        <div class="table-responsive ">
+            <table class="table text-center table-bordered">
                 <thead>
                     <tr class="bg-black-active text-center">
                             <td>Bloques</td>
@@ -38,13 +38,13 @@
                 <tbody>
                     {% for schedule in data_schedule %}
                     <tr class="text-center">
-                            <td>{{ schedule.block }}</td>
-                            <td>{{ schedule.lunes }}</td>
-                            <td>{{ schedule.martes }}</td>
-                            <td>{{ schedule.miercoles }}</td>
-                            <td>{{ schedule.jueves }}</td>
-                            <td>{{ schedule.viernes }}</td>
-                            <td>{{ schedule.sabado }}</td>
+                            <td class="bg-light-blue-active">{{ schedule.block }}</td>
+                            <td class="bg-gray-active">{{ schedule.lunes }}</td>
+                            <td class="bg-gray-active">{{ schedule.martes }}</td>
+                            <td class="bg-gray-active">{{ schedule.miercoles }}</td>
+                            <td class="bg-gray-active">{{ schedule.jueves }}</td>
+                            <td class="bg-gray-active">{{ schedule.viernes }}</td>
+                            <td class="bg-gray-active">{{ schedule.sabado }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

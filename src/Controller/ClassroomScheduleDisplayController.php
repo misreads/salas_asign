@@ -25,12 +25,12 @@ class ClassroomScheduleDisplayController extends Controller
         $allocations = $em->getRepository('App:Allocation')->findAll();
 
         $allocationByClassroom = [];
-        $l = array_fill(1,9,"Sin asignar");;
-        $m = array_fill(1,9,"Sin asignar");;
-        $w = array_fill(1,9,"Sin asignar");;
-        $j = array_fill(1,9,"Sin asignar");;
-        $v = array_fill(1,9,"Sin asignar");;
-        $s = array_fill(1,9,"Sin asignar");;
+        $l = array_fill(1,9," ");;
+        $m = array_fill(1,9," ");;
+        $w = array_fill(1,9," ");;
+        $j = array_fill(1,9," ");;
+        $v = array_fill(1,9," ");;
+        $s = array_fill(1,9," ");;
         $blockArray = [];
 
         $count = 1;
@@ -81,8 +81,6 @@ class ClassroomScheduleDisplayController extends Controller
                 }
             }
         }
-
-        dump($blockArray);
 
         $dataSchedule = [];
 

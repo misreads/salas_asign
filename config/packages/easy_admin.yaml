@@ -15,13 +15,18 @@ easy_admin:
         title: 'Creacion de %%entity_label%%'
 
     design:
+
         menu:
-            - { label: 'Dashboard', route: 'dashboard', default: true}
-            - { label: 'Horario de sala', entity: 'ClassroomDisplay'}
+            - { label: 'Dashboard', route: 'dashboard', default: true, require_permission: ["ROLE_ADMIN"]}
+            - { label: 'Horarios de salas', entity: 'ClassroomDisplay', require_permission: ["ROLE_USER"]}
             - label: 'Asignaciones'
+              require_permission: ["ROLE_ADMIN"]
               children: [{ label: 'Asignar a salas', entity: 'SectionCustom'},{ label: 'Asignar a asignaturas', entity: 'ClassroomCustom'},{label: 'Asignaciones Realizadas', entity: 'Allocation'}]
             - label: 'Administracion'
+              require_permission: ["ROLE_ADMIN"]
               children: [{label: 'Usuario', entity: 'User'},{label: 'Secciones', entity: 'Section'},{label: 'Facultades', entity: 'Faculty'},{label: 'Departamentos', entity: 'Department'},{ label: 'Facultades y Deptos.', entity: 'FacultyDepartment'},{label: 'Carreras', entity: 'Career'},{label: 'Asignaturas', entity: 'Subject'},{label: 'Profesores', entity: 'Professor'},{label: 'Salas', entity: 'Classroom'}]
+        templates:
+            menu: 'easy_admin/menuCustom.html.twig'
 
 
     entities:
@@ -269,7 +274,6 @@ easy_admin:
                         - {name: 'section_allocation', type: 'route',label: 'Asignar' ,icon: 'plus-circle',css_class: 'text-green'}
                         - '-delete'
                         - '-edit'
-
 
                     sort: ['name', 'DESC']
                     dql_filter: 'entity.isTaken != true'
