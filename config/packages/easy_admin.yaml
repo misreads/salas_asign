@@ -213,12 +213,14 @@ easy_admin:
                         - { property : 'professor', label: 'Profesor'}
                 new:
                     fields:
-                        - { property : 'name', label: 'Nombre'}
+                        - { property : 'subject', label: 'Asignatura'}
+                        - { property : 'name', label: 'Nombre Seccion'}
                         - { property : 'code', label: 'Codigo seccion'}
                         - { property : 'classSize', type: 'integer' , label: 'Cantidad de alumnos'}
-                        - { property : 'subject', label: 'Asignatura'}
                         - { property : 'schedule', label: 'Horario'}
                         - { property : 'professor', label: 'Profesor'}
+                        - { property: 'is_taken', label: 'No tocar', type: 'checkbox'}
+
                 templates:
                     list: 'easy_admin/SectionListCustom.html.twig'
 

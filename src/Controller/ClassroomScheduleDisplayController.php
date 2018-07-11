@@ -57,7 +57,7 @@ class ClassroomScheduleDisplayController extends Controller
                 $abv = $alloc->getSection()->getSchedule()->getAbv();
                 $dayAbv = $abv[0];
                 $index = $abv[1];
-                $allocInfo = $alloc->getSection()->getName();
+                $allocInfo = $alloc->getSection()->getName() ." - ". $alloc->getSection()->getProfessor();
 
                 switch ($dayAbv) {
                     case "L":

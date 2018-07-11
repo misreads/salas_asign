@@ -32,13 +32,6 @@ class AdminController extends BaseAdminController
         $this->em->flush();
     }
 
-    protected function persistSectionEntity($entity)
-    {
-        $entity->setIsTaken(false);
-        $this->em->persist($entity);
-        $this->em->flush();
-    }
-
     private function checkPermissions()
     {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
