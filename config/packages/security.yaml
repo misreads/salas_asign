@@ -40,7 +40,7 @@ security:
         - { path: ^/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/salas_asign/?entity=ClassroomDisplay/, role: ROLE_USER }
+        - { path: ^/salas_asign/?entity=ClassroomDisplay&action=list&menuIndex=1&submenuIndex=-1, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/salas_asign/dashboard?menuIndex=0&submenuIndex=-1, role: ROLE_USER }
-        - { path: ^/, role: ROLE_USER }
+        - { path: ^/, role: ROLE_ADMIN }
 
